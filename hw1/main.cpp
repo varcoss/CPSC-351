@@ -24,6 +24,7 @@ int main()
 		std::cout<<"\nChild Fork Intitiated..\n";
 		pidManager child;
 		std::cout<<"Child Object:\n";
+		child.allocate_pid();
 		child.allocate_map();
 		child.allocate_pid();
 		child.allocate_pid();
@@ -39,6 +40,7 @@ int main()
 		parent.allocate_pid();
 		parent.release_pid(101);
 		parent.release_pid(100);
+		parent.release_pid(99);
 		std::cout<<"Parent Process finished..\n";
 	}
 	

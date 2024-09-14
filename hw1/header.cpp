@@ -28,9 +28,14 @@ int pidManager::allocate_map(void){
 
 int pidManager::allocate_pid(void){
 
-	if(bitmap.empty() || bitmap.size() != MAX_PID - MIN_PID)
+	if(bitmap.size() != MAX_PID - MIN_PID && bitmap.empty() != true)
 	{
-		std::cout<<"Cannot allocate PID because Bitmap not allocated..\n";
+		std::cout<<"Cannot allocate PID due to range..\n";
+		return -1;
+	}else if(bitmap.empty())
+	{
+		std::cout<<"Cannot allocate because bitmap not initialized..\n";
+		return -1;
 	}
 
 	for(int i = MIN_PID; i < MAX_PID; i++)
@@ -50,7 +55,7 @@ int pidManager::allocate_pid(void){
 
 void pidManager::release_pid(int pid){
 	if(pid < MIN_PID || pid > MAX_PID){
-		std::cout << "\nError, pid not intitialized or allocated\n";
+		std::cout << "Error, pid not intitialized or allocated\n";
 	}
 	else
 	{
