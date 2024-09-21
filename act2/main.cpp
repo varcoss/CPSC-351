@@ -6,6 +6,7 @@
 void increment_array_elements(std::vector<int>& array, int start, int end) {
     for (int i = start; i < end; ++i) {
         array[i] += 1;
+        std::cout << "Thread: " << pthread_self() << ", Incremented array[" << i << "] = " << array[i] << std::endl; //modify array name as you have in your program. pthread_self() will print out ID of the thread.
     }
 }
 
