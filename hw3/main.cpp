@@ -12,44 +12,44 @@ void workerFunction(int id, int start, int end){
 	
 	// local vector that will store prime numbers
 	std::vector<int> local;
-
 	
 }
 
 bool checkingIfPrime (int number)
 	{
-		if(n<=1)
+		if(number<=1)
 		{
 			return false;
 		}
-		else if(n<=3)
+		else if(number<=3)
 		{
 			return true;
 		}
-		else if(n%2==0 || n%3==0)
+		else if(number%2==0 || number%3==0)
 		{
 			return false;
 		}
 
-		for (int i=5; i <= std::sqrt(n); i = (i + 6))
+		for (int i=5; i <= std::sqrt(number); i = (i + 6))
 		{
-			if (n%i == 0 || n % (i + 2) == 0)
+			if (number%i == 0 || number % (i + 2) == 0)
 			{
 				return false;
 			}
 		}
+		return false;
 	}
 
 void vectorAdd (int number)
 	{
-		if checkingIfPrime(number)
+		if (checkingIfPrime(number))
 		{	
-		primeNums.push_back(int)
+		primeNums.push_back(number);
 		}
 	}
 
 int main(int argc, char* argv[]){
-	int limit = arv[0];
+	int limit = std::atoi(argv[0]);
 	
 	// getting input from user
 	for(int i = 1; i > 0;i++)
