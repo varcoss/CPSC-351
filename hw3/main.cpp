@@ -5,18 +5,51 @@
 #include <mutex>
 #include <algorithm>
 
-std::vector<int> workerFunction(int id, int start, int end){
+std::vector<int> primeNums;
+
+void workerFunction(int id, int start, int end){
 	std::cout << "Thread " << id << " is working. " << start << " " << end <<" \n";
 	
 	// local vector that will store prime numbers
 	std::vector<int> local;
 
-	return local;
+	
 }
 
-int main(){
-	std::vector<int> primeNums;	
-	int limit = 0;
+bool checkingIfPrime (int number)
+	{
+		if(n<=1)
+		{
+			return false;
+		}
+		else if(n<=3)
+		{
+			return true;
+		}
+		else if(n%2==0 || n%3==0)
+		{
+			return false;
+		}
+
+		for (int i=5; i <= std::sqrt(n); i = (i + 6))
+		{
+			if (n%i == 0 || n % (i + 2) == 0)
+			{
+				return false;
+			}
+		}
+	}
+
+void vectorAdd (int number)
+	{
+		if checkingIfPrime(number)
+		{	
+		primeNums.push_back(int)
+		}
+	}
+
+int main(int argc, char* argv[]){
+	int limit = arv[0];
 	
 	// getting input from user
 	for(int i = 1; i > 0;i++)
@@ -72,7 +105,7 @@ int main(){
 	// starting threads
 	for (unsigned int i = 0; i <numThreads; ++i)
 	{
-		primeNums = threads.emplace_back(workerFunction,i,range[i].first, range[i].second);
+		threads.emplace_back(workerFunction,i,range[i].first, range[i].second);
 	}
 	
 	//waiting for threads
