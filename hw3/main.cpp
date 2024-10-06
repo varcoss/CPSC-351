@@ -4,14 +4,30 @@
 #include <cmath>
 #include <mutex>
 #include <algorithm>
+#include <unistd.h>
+#include <sys/wait.h>
+
+#define BUFFER_SIZE 25
+#define MAX_PID 1000
 
 std::vector<int> primeNums;
+bool checkingIfPrime(int number);
+void vectorAdd(int number);
 
 void workerFunction(int id, int start, int end){
 	std::cout << "Thread " << id << " is working. " << start << " " << end <<" \n";
-	
-	// local vector that will store prime numbers
-	std::vector<int> local;
+
+	while(start <= end )
+	{
+		if(checkingIfPrime)
+		{
+			vectorAdd(start);
+		}
+
+		start++;
+	}
+
+
 	
 }
 
@@ -37,35 +53,30 @@ bool checkingIfPrime (int number)
 				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 
 void vectorAdd (int number)
 	{
-		if (checkingIfPrime(number))
-		{	
 		primeNums.push_back(number);
-		}
 	}
 
 int main(int argc, char* argv[]){
-	int limit = std::atoi(argv[0]);
 	
-	// getting input from user
-	for(int i = 1; i > 0;i++)
+	//creating pipe
+	char write_msg[BUFFER_SIZE];
+	char read_msg[BUFFER_SIZE];
+	int fd1[2];
+	pid_t pid;
+	if(pipe(fd1) == -1)
 	{
-		std::cin >> limit;
-
-		if( limit >= 1)
-		{
-			break;
-		}
-		else //if input invalid, then loop
-		{
-			std::cout<< "input invalid, try again\n";
-		}
-
+		fprintf(stderr,"Pipe failed");
+		return 1;
 	}
+
+
+	//getting input from user
+	int limit = std::atoi(argv[1]);	
 
 	// getting threads of csystem
 	unsigned int numThreads = std::thread::hardware_concurrency();
@@ -112,6 +123,13 @@ int main(int argc, char* argv[]){
 	for(auto& t:threads)
 	{
 		t.join();
+	}
+
+	sort(primeNums.begin(), primeNums.end());
+
+	for(int i = 0; i< primeNums.size();i++)
+	{
+		std::cout<<primeNums[i] << " \n";
 	}
 	
 	return 0;
