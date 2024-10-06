@@ -7,18 +7,16 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-std::vector<int> primeNums;
 bool checkingIfPrime(int number);
-void vectorAdd(int number);
 
-void workerFunction(int id, int start, int end){
+void workerFunction(int id, int start, int end, std::vector<int>& local){
 	std::cout << "Thread " << id << " is working. " << start << " " << end <<" \n";
 
 	while(start <= end )
 	{
 		if(checkingIfPrime(start))
 		{
-			vectorAdd(start);
+			local.push_back(start);
 		}
 
 		start++;
@@ -53,10 +51,6 @@ bool checkingIfPrime (int number)
 		return true;
 	}
 
-void vectorAdd (int number)
-	{
-		primeNums.push_back(number);
-	}
 
 int main(int argc, char* argv[]){
 
@@ -98,10 +92,12 @@ int main(int argc, char* argv[]){
 	// vector for threads
 	std::vector<std::thread> threads;
 
+	std::vector<std::vector<int>> vectorOfVector(numThreads);
+
 	// starting threads
 	for (unsigned int i = 0; i <numThreads; ++i)
 	{
-		threads.emplace_back(workerFunction,i,range[i].first, range[i].second);
+		threads.emplace_back(workerFunction,i,range[i].first, range[i].second, std::ref(vectorOfVector[i]));
 	}
 	
 	//waiting for threads
@@ -110,13 +106,21 @@ int main(int argc, char* argv[]){
 		t.join();
 	}
 
+	//combining all vectors
+	std::vector<int> finalVector;
+
+	for (int i = 0; i < numThreads;i++)
+	{
+		finalVector.insert(finalVector.end(), vectorOfVector.begin(), vectorOfVector.end());
+	}
+
 	//sorting
-	sort(primeNums.begin(), primeNums.end());
+	sort(finalVector.begin(), finalVector.end());
 
 	//displaying sorted prime nums
-	for(int i = 0; i< primeNums.size();i++)
+	for(int i = 0; i< finalVector.size();i++)
 	{
-		std::cout<<primeNums[i] << " ";
+		std::cout<<finalVector[i] << " ";
 	}
 
 	std::cout<<"\n";
