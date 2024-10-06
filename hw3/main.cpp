@@ -7,9 +7,6 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-#define BUFFER_SIZE 25
-#define MAX_PID 1000
-
 std::vector<int> primeNums;
 bool checkingIfPrime(int number);
 void vectorAdd(int number);
@@ -19,20 +16,19 @@ void workerFunction(int id, int start, int end){
 
 	while(start <= end )
 	{
-		if(checkingIfPrime)
+		if(checkingIfPrime(start))
 		{
 			vectorAdd(start);
 		}
 
 		start++;
-	}
-
-
-	
+	}	
 }
 
+// checking for primes
 bool checkingIfPrime (int number)
 	{
+		//excluding non prime numbers and divisable numbers
 		if(number<=1)
 		{
 			return false;
@@ -46,6 +42,7 @@ bool checkingIfPrime (int number)
 			return false;
 		}
 
+		// identifying non primes 
 		for (int i=5; i <= std::sqrt(number); i = (i + 6))
 		{
 			if (number%i == 0 || number % (i + 2) == 0)
@@ -62,18 +59,6 @@ void vectorAdd (int number)
 	}
 
 int main(int argc, char* argv[]){
-	
-	//creating pipe
-	char write_msg[BUFFER_SIZE];
-	char read_msg[BUFFER_SIZE];
-	int fd1[2];
-	pid_t pid;
-	if(pipe(fd1) == -1)
-	{
-		fprintf(stderr,"Pipe failed");
-		return 1;
-	}
-
 
 	//getting input from user
 	int limit = std::atoi(argv[1]);	
@@ -125,12 +110,16 @@ int main(int argc, char* argv[]){
 		t.join();
 	}
 
+	//sorting
 	sort(primeNums.begin(), primeNums.end());
 
+	//displaying sorted prime nums
 	for(int i = 0; i< primeNums.size();i++)
 	{
-		std::cout<<primeNums[i] << " \n";
+		std::cout<<primeNums[i] << " ";
 	}
+
+	std::cout<<"\n";
 	
 	return 0;
 }
