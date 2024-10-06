@@ -58,7 +58,13 @@ bool checkingIfPrime (int number)
 int main(int argc, char* argv[]){
 
 	//getting input from user
-	int limit = std::atoi(argv[1]);	
+	int limit = std::atoi(argv[1]);
+
+	if(limit < 1)
+	{
+		std::cout << "invalid input, run program again\n";
+		return 0;
+	}	
 
 	// getting threads of csystem
 	unsigned int numThreads = std::thread::hardware_concurrency();
