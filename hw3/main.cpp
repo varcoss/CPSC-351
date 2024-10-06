@@ -12,6 +12,7 @@ bool checkingIfPrime(int number);
 void workerFunction(int id, int start, int end, std::vector<int>& local){
 	std::cout << "Thread " << id << " is working. " << start << " " << end <<" \n";
 
+	// checking for primes and adding to vector
 	while(start <= end )
 	{
 		if(checkingIfPrime(start))
@@ -48,6 +49,8 @@ bool checkingIfPrime (int number)
 				return false;
 			}
 		}
+
+		// yay we did it
 		return true;
 	}
 
@@ -109,9 +112,9 @@ int main(int argc, char* argv[]){
 	//combining all vectors
 	std::vector<int> finalVector;
 
-	for (int i = 0; i < numThreads;i++)
+	for (unsigned int i = 0; i < numThreads;i++)
 	{
-		finalVector.insert(finalVector.end(), vectorOfVector.begin(), vectorOfVector.end());
+		finalVector.insert(finalVector.end(), vectorOfVector[i].begin(), vectorOfVector[i].end());
 	}
 
 	//sorting
